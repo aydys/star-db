@@ -8,18 +8,20 @@ import Spinner from '../spinner';
 import './RandomPlanet.css';
 
 export default class RandomPlanet extends Component {
-    constructor() {
-        super();
-        this.updatePlanet()
-    }
     state = {
         planet: {},
         loading: true,
         error: false
     };
+    
     swapiService = new SwapiService();
 
-    onError = (err) => {
+    componentWillMount() {
+        this.updatePlanet();
+        this.interval = setInterval(this.updatePlanet, 2500);
+    }
+
+    onError = () => {
         this.setState({
             error: true,
             loading: false
@@ -32,12 +34,13 @@ export default class RandomPlanet extends Component {
             loading: false
         });
     };
-    updatePlanet() {
+    updatePlanet = () => {
         const id = Math.floor(Math.random()*25 + 2);
         this.swapiService
             .getPlanet(id)
             .then(this.onPlanetLoaded)
             .catch(this.onError);
+    console.log('update')
     }
     render () {
         const { planet, loading, error } = this.state;

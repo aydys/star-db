@@ -9,7 +9,7 @@ export default class SwapiService {
     }
     async getAllPeople(){
         const res = await this._getResource(`/people/`);
-        return res.results.map(this._transformedPerson());
+        return res.results.map(this._transformedPerson);
     }
     async getPerson(id){
         const person = await this._getResource(`/people/${id}`)
@@ -17,7 +17,7 @@ export default class SwapiService {
     }
     async getAllPlanets() {
         const res = await this._getResource(`/planets/`);
-        return res.results.map(this._transformedPlanet());
+        return res.results.map(this._transformedPlanet);
     }
     async getPlanet(id){
         const planet = await this._getResource(`/planets/${id}/`);
@@ -25,11 +25,11 @@ export default class SwapiService {
     }
      async getAllStarships() {
         const res = await this._getResource(`/starships/`);
-        return res.results;
+        return res.results.map(this._transformedPlanet);
     }
     async getStarship(id) {
         const starship = await this._getResource(`/starships/${id}/`)
-        return this._getResource(`/starships/${id}/`);
+        return this._transformedStarship(starship);
     }
 
     _extractId(item) {
@@ -37,7 +37,7 @@ export default class SwapiService {
         return item.url.match(idRegrex)[1];
     }
 
-    _transformedPlanet(planet) {
+    _transformedPlanet = (planet) => {
         return {
             id: this._extractId(planet),
             name: planet.name,
@@ -45,9 +45,9 @@ export default class SwapiService {
             rotationPeriod: planet.rotation_period,
             diameter: planet.diameter
         };
-    }
+    };
 
-    _transformedStarship(starship) {
+    _transformedStarship = (starship) => {
         return {
             id: this._extractId(starship),
             name: starship.name,
@@ -61,7 +61,7 @@ export default class SwapiService {
         }
     }
 
-    _transformedPerson(person) {
+    _transformedPerson = (person) => {
         return {
             id: this._extractId(person),
             name: person.name,
