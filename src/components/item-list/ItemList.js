@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import './item-list.css';
+import './ItemList.css';
 
 export default class ItemList extends Component {
     render() {
