@@ -20,21 +20,31 @@ const Row = ({left, right}) => {
     )
 };
 
+class ErrorBoundry extends Component {
+    state = {
+        hasError: false
+    }
+    componentDidCatch() {
+        this.setState({ hasError: true });
+    }
+    render() {
+        if(this.state.hasError) {
+            return <ErrorIndicator />
+        }
+        return this.props.children;
+    }
+}
+
 export default class PeoplePage extends Component {
     swapiService = new SwapiService();
     state = {
-        selectedPerson: 2,
-        hasError: false
+        selectedPerson: 2
     };
 
     onPersonSelected = (id) => {
         this.setState({
             selectedPerson: id
         })
-    }
-
-    componentDidCatch() {
-        this.setState({ hasError: true });
     }
 
     render() {
@@ -45,18 +55,18 @@ export default class PeoplePage extends Component {
         const itemList = (
             <ItemList 
             onItemSelected={this.onPersonSelected}
-            getData={this.swapiService.getAllPeople}
-            renderItem={({ name, gender, birthYear}) => `${name} (${gender}, ${birthYear})`} />
+            getData={this.swapiService.getAllPeople}>
+                 {(i) => `${i.name} (${i.gender}, ${i.birthYear})`}
+            </ItemList>
         );
 
         const personDetails = (
             <PersonDetails personId={this.state.selectedPerson} />
         );
         return (
-            <div>
+            <ErrorBoundry>
                 <Row left={itemList} right={personDetails} />
-                <Row left={<p>Hello</p>} right={<p>World!</p>} />
-            </div>
+            </ErrorBoundry>
         )
     }
 };
