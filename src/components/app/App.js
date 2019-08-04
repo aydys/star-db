@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 
 import Header from '../header';
-import RandomPlanet from '../random-planet';
-import PersonPage from '../people-page';
-import ErrorButton from '../error-button';
-import ItemDetails, { Record } from '../item-details/ItemDetails';
 import ErrorBoundry from '../error-boundry';
 
 import './App.css';
 
 import SwapiService from '../../services/swapi-services';
-import Row from '../row';
+import DummySwapiService from '../../services/dummy-swapi-service';
 
 import { SwapiServiceProvider} from '../swapi-service-context';
 
@@ -24,25 +20,33 @@ import {
 } from '../sw-components';
 
 export default class App extends Component {
-    swapiService = new SwapiService();
+    
     state = {
-        hasError: false
+        hasError: false,
+        swapiService: new DummySwapiService()
     };
+
+    onServiceChange = () => {
+        this.setState(({ swapiService }) => {
+            const Service = swapiService instanceof SwapiService ? DummySwapiService : SwapiService;
+
+            return {
+                swapiService: new Service()
+            }
+        })
+    }
 
     componentDidCatch() {
         this.setState({ hasError: true });
     }
 
     render() {
-        const planet = this.state.showRandomPlanet ? <RandomPlanet /> : null;
-
-        const { getPerson, getStarship, getPersonImage, getStarshipImage } = this.swapiService;
-        
         return (
             <ErrorBoundry>
-                <SwapiServiceProvider value={this.swapiService}>
+                <SwapiServiceProvider value={this.state.swapiService}>
                     <div className='stardb-app'>
-                        <Header />
+                        <Header 
+                            onServiceChange={this.onServiceChange}/>
 
                         <PersonDetails itemId={11} />
 

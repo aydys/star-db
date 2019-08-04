@@ -17,7 +17,7 @@ const StarshipDetails = (props) => {
 const mapMethodsToProps = (swapiService) => {
     return {
         getData: swapiService.getStarship,
-        getImageUrl: swapiService.getImageUrl
+        getImageUrl: swapiService.getStarshipImage
     }
 }
 
