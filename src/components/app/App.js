@@ -12,6 +12,8 @@ import './App.css';
 import SwapiService from '../../services/swapi-services';
 import Row from '../row';
 
+import { SwapiServiceProvider} from '../swapi-service-context';
+
 import {
     PersonList,
     PlanetList,
@@ -38,25 +40,30 @@ export default class App extends Component {
         
         return (
             <ErrorBoundry>
-                <div className=''>
-                    <Header />
+                <SwapiServiceProvider value={this.swapiService}>
+                    <div className='stardb-app'>
+                        <Header />
 
-                    <PersonDetails itemId={11} />
-                    <PlanetDetails itemId={21} />
+                        <PersonDetails itemId={11} />
 
-                    <PersonList>
-                        {({name}) => <span>{name}</span>}    
-                    </PersonList>
+                        <PlanetDetails itemId={21} />
 
-                    <StarshipList>
-                        {({name}) => <span>{name}</span>}    
-                    </StarshipList>
+                        <StarshipDetails itemId={9} />
 
-                    <PlanetList>
-                        {({name}) => <span>{name}</span>}    
-                    </PlanetList>
-                    
-                </div>
+                        <PersonList>
+                            {({name}) => <span>{name}</span>}    
+                        </PersonList>
+
+                        <StarshipList>
+                            {({name}) => <span>{name}</span>}    
+                        </StarshipList>
+
+                        <PlanetList>
+                            {({name}) => <span>{name}</span>}    
+                        </PlanetList>
+
+                    </div>
+                </SwapiServiceProvider>                
             </ErrorBoundry>
             
         )

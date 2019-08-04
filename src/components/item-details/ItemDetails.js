@@ -54,11 +54,14 @@ export default class ItemDetails extends Component {
                     image: getImageUrl(dataItem)
                 })                
             })
+            .catch(function(error) {
+                console.log('Request failed', error)
+            })
     }
     render() {
-        
+        console.log(this.state.item)
         if (!this.state.item) {
-            return <span>Select a item form a list</span>
+            return <Spinner />
         }
 
         if (this.state.update) {
