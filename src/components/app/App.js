@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Header from '../header';
 import ErrorBoundry from '../error-boundry';
-
+import RandomPlanet from '../random-planet';
 import './App.css';
 
 import SwapiService from '../../services/swapi-services';
@@ -10,20 +10,13 @@ import DummySwapiService from '../../services/dummy-swapi-service';
 
 import { SwapiServiceProvider} from '../swapi-service-context';
 
-import {
-    PersonList,
-    PlanetList,
-    StarshipList,
-    PersonDetails,
-    PlanetDetails,
-    StarshipDetails
-} from '../sw-components';
+import { PeoplePage, PlanetPage, StarshipPage } from '../pages';
 
 export default class App extends Component {
     
     state = {
         hasError: false,
-        swapiService: new DummySwapiService()
+        swapiService: new SwapiService()
     };
 
     onServiceChange = () => {
@@ -47,25 +40,10 @@ export default class App extends Component {
                     <div className='stardb-app'>
                         <Header 
                             onServiceChange={this.onServiceChange}/>
-
-                        <PersonDetails itemId={11} />
-
-                        <PlanetDetails itemId={21} />
-
-                        <StarshipDetails itemId={9} />
-
-                        <PersonList>
-                            {({name}) => <span>{name}</span>}    
-                        </PersonList>
-
-                        <StarshipList>
-                            {({name}) => <span>{name}</span>}    
-                        </StarshipList>
-
-                        <PlanetList>
-                            {({name}) => <span>{name}</span>}    
-                        </PlanetList>
-
+                        <RandomPlanet />
+                        <PeoplePage />
+                        <PlanetPage />
+                        <StarshipPage />
                     </div>
                 </SwapiServiceProvider>                
             </ErrorBoundry>
