@@ -8,6 +8,10 @@ import Spinner from '../spinner';
 import './RandomPlanet.css';
 
 export default class RandomPlanet extends Component {
+    static defaultProps = {
+        updateInterval: 10000
+    };
+
     state = {
         planet: {},
         loading: true,
@@ -17,8 +21,9 @@ export default class RandomPlanet extends Component {
     swapiService = new SwapiService();
 
     componentWillMount() {
+        const { updateInterval } = this.props;
         this.updatePlanet();
-        this.interval = setInterval(this.updatePlanet, 10000);
+        this.interval = setInterval(this.updatePlanet, updateInterval);
     }
 
     onError = () => {
