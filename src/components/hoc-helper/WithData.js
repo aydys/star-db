@@ -33,10 +33,13 @@ const withData = (View) => {
                     loading: false
                 });
             })
-            .catch(this.setState({
-                error: true,
-                loading: false
-            }));
+            .catch(() => {
+                    this.setState({
+                    error: true,
+                    loading: false
+                    })
+                }
+            );
         }
 
         render() {
